@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan de Estudios - Ingeniería de Sistemas</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Plan de Estudios - Ingeniería de Sistemas</h1>
+    <div id="contenedor"></div>
+    <h3>Total de Créditos Aprobados: <span id="totalCreditos">0</span></h3>
+  </div>
+  <script>
+    const materias = [
+      { nombre: "Programación", codigo: "IS0236", creditos: 2, semestre: 1, prereqs: [] },
+      { nombre: "Intro a Ingeniería de Sistemas", codigo: "IS0254", creditos: 2, semestre: 1, prereqs: [] },
+      { nombre: "Pensamiento Sistémico", codigo: "IS0206", creditos: 3, semestre: 1, prereqs: [] },
+      { nombre: "Cálculo Diferencial", codigo: "MA0074", creditos: 3, semestre: 1, prereqs: [] },
+      { nombre: "Inglés I", codigo: "ID0061", creditos: 3, semestre: 1, prereqs: [] },
+      { nombre: "Inglés II", codigo: "ID0063", creditos: 3, semestre: 2, prereqs: ["ID0061"] },
+      { nombre: "Inglés III", codigo: "ID0064", creditos: 3, semestre: 3, prereqs: ["ID0063"] },
+      { nombre: "Programación Intermedia", codigo: "IS0207", creditos: 3, semestre: 2, prereqs: ["IS0236"] },
+      { nombre: "Estructuras de Datos", codigo: "IS0209", creditos: 3, semestre: 2, prereqs: ["IS0236"] },
+      { nombre: "Cálculo Integral", codigo: "MA0075", creditos: 3, semestre: 2, prereqs: ["MA0074"] },
+      { nombre: "Álgebra Lineal", codigo: "MA0096", creditos: 3, semestre: 2, prereqs: [] },
+      { nombre: "Física Mecánica", codigo: "MA0105", creditos: 3, semestre: 2, prereqs: [] },
+      { nombre: "Programación Avanzada", codigo: "IS0210", creditos: 3, semestre: 3, prereqs: ["IS0207"] },
+      { nombre: "Bases de Datos", codigo: "IS0212", creditos: 3, semestre: 3, prereqs: ["IS0209"] },
+      { nombre: "Arquitectura de Computadores", codigo: "IS0211", creditos: 3, semestre: 3, prereqs: [] },
+      { nombre: "Cálculo en Varias Variables", codigo: "MA0077", creditos: 3, semestre: 3, prereqs: ["MA0075"] },
+      { nombre: "Electricidad y Magnetismo", codigo: "MA0106", creditos: 3, semestre: 3, prereqs: ["MA0105"] },
+      { nombre: "Programación de Móviles", codigo: "IS0213", creditos: 3, semestre: 4, prereqs: ["IS0210"] },
+      { nombre: "Sistemas Operativos", codigo: "IS0214", creditos: 3, semestre: 4, prereqs: ["IS0211"] },
+      { nombre: "Admin de Bases de Datos", codigo: "IS0255", creditos: 3, semestre: 4, prereqs: ["IS0212"] },
+      { nombre: "Ecuaciones Diferenciales", codigo: "MA0078", creditos: 3, semestre: 4, prereqs: ["MA0077"] },
+      { nombre: "Matemáticas Discretas", codigo: "MA0081", creditos: 3, semestre: 4, prereqs: [] },
+      { nombre: "Ingenieria Economica", codigo: "II0155", creditos: 2, semestre: 4, prereqs: [] },
+      { nombre: "Fund. de Redes", codigo: "IS0217", creditos: 3, semestre: 5, prereqs: ["IS0214"] },
+      { nombre: "Fund. de Ingeniería de Software", codigo: "IS0216", creditos: 3, semestre: 5, prereqs: [] },
+      { nombre: "Programación Lineal", codigo: "II0295", creditos: 3, semestre: 5, prereqs: ["MA0096"] },
+      { nombre: "Estadística y Probabilidad", codigo: "ES0001", creditos: 3, semestre: 5, prereqs: [] },
+      { nombre: "Métodos Numéricos", codigo: "MA0079", creditos: 3, semestre: 5, prereqs: ["MA0078"] },
+      { nombre: "Catedra Libertadora", codigo: "PG0044", creditos: 3, semestre: 5, prereqs: [] },
+      { nombre: "Ciberseguridad", codigo: "IS0257", creditos: 3, semestre: 6, prereqs: ["IS0217"] },
+      { nombre: "Investigación de Operaciones", codigo: "II0157", creditos: 3, semestre: 6, prereqs: ["II0295"] },
+      { nombre: "Estadística Inferencial", codigo: "ES0002", creditos: 3, semestre: 6, prereqs: ["ES0001"] },
+      { nombre: "Bases de Datos No Estructuradas", codigo: "IS0235", creditos: 3, semestre: 6, prereqs: ["IS0255"] },
+      { nombre: "Computación en la Nube", codigo: "IS0256", creditos: 3, semestre: 6, prereqs: [] },
+      { nombre: "Formulacion de proyectos de ingenieria", codigo: "II0300", creditos: 2, semestre: 6, prereqs: ["II0155"] },
+      { nombre: "Sistemas Distribuidos", codigo: "IS0222", creditos: 3, semestre: 7, prereqs: [] },
+      { nombre: "Estándares y Calidad de Software", codigo: "IS0221", creditos: 3, semestre: 7, prereqs: [] },
+      { nombre: "Electiva Profesional I", codigo: "IS0258", creditos: 3, semestre: 7, prereqs: [] },
+      { nombre: "Electiva Componente Transversal", codigo: "IS0259", creditos: 3, semestre: 7, prereqs: [] },
+      { nombre: "Electiva Cultural del emprendimiento", codigo: "EM0051", creditos: 3, semestre: 7, prereqs: [] },
+      { nombre: "Gerencia de Proyectos", codigo: "II0343", creditos: 2, semestre: 7, prereqs: ["II0300"] },
+      { nombre: "Inteligencia Artificial I", codigo: "IS0260", creditos: 3, semestre: 8, prereqs: [] },
+      { nombre: "Seminario de Investigación", codigo: "IS0262", creditos: 2, semestre: 8, prereqs: [] },
+      { nombre: "Electiva Profesional II", codigo: "IS0261", creditos: 3, semestre: 8, prereqs: [] },
+      { nombre: "Minería de Datos", codigo: "ES0023", creditos: 3, semestre: 8, prereqs: ["ES0002"] },
+      { nombre: "Arquitectura Empresarial", codigo: "ES0023", creditos: 3, semestre: 8, prereqs: ["II0343"] },
+      { nombre: "Inteligencia Artificial II", codigo: "IS0264", creditos: 3, semestre: 9, prereqs: ["IS0260"] },
+      { nombre: "Electiva Profesional III", codigo: "IS0265", creditos: 3, semestre: 9, prereqs: [] },
+      { nombre: "Práctica Profesional", codigo: "IS0263", creditos: 6, semestre: 9, prereqs: [] },
+      { nombre: "Opción de Grado", codigo: "IS0267", creditos: 3, semestre: 9, prereqs: ["IS0262"] },
+      { nombre: "Electiva Profesional IV", codigo: "IS0266", creditos: 3, semestre: 9, prereqs: [] }
+    ];
+
+    const estadoMaterias = JSON.parse(localStorage.getItem('estadoMaterias')) || {};
+
+    function renderMaterias() {
+      const contenedor = document.getElementById("contenedor");
+      contenedor.innerHTML = "";
+      let creditos = 0;
+
+      for (let semestre = 1; semestre <= 9; semestre++) {
+        const materiasDelSemestre = materias.filter(m => m.semestre === semestre);
+        if (materiasDelSemestre.length === 0) continue;
+
+        const bloque = document.createElement("div");
+        bloque.className = "semestre-bloque";
+
+        const titulo = document.createElement("h2");
+        titulo.textContent = `Semestre ${semestre}`;
+        bloque.appendChild(titulo);
+
+        const grid = document.createElement("div");
+        grid.className = "semestre-grid";
+
+        materiasDelSemestre.forEach(m => {
+          const div = document.createElement("div");
+          div.className = "materia";
+          const cumplidos = m.prereqs.every(p => estadoMaterias[p]);
+
+          if (!cumplidos) div.classList.add("bloqueada");
+          if (estadoMaterias[m.codigo]) div.classList.add("aprobada");
+
+          div.textContent = m.nombre;
+          const span = document.createElement("span");
+          span.className = "creditos";
+          span.textContent = `${m.creditos} créditos`;
+          div.appendChild(span);
+
+          div.addEventListener("click", () => {
+            if (!cumplidos) return;
+            estadoMaterias[m.codigo] = !estadoMaterias[m.codigo];
+            localStorage.setItem('estadoMaterias', JSON.stringify(estadoMaterias));
+            renderMaterias();
+          });
+
+          grid.appendChild(div);
+          if (estadoMaterias[m.codigo]) creditos += m.creditos;
+        });
+
+        bloque.appendChild(grid);
+        contenedor.appendChild(bloque);
+      }
+
+      document.getElementById("totalCreditos").textContent = creditos;
+    }
+
+    renderMaterias();
+  </script>
+</body>
+</html>
+
