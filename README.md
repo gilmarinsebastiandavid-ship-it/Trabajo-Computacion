@@ -79,3 +79,5 @@ Ahora tu sitio está disponible en la IP pública de tu instancia:
 
 👉 `http://<tu-ip-de-aws>/`
 
+
+## 🌍 Resultado
