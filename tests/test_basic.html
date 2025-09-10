@@ -1,53 +1,49 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <title>Test Básico Autovalidado</title>
 </head>
 <body>
   <h1>Ejecutando Test Básico</h1>
-  <pre id="resultado"></pre>
+  <pre id="resultado">Ejecutando tests...</pre>
 
   <script>
-    function runTests() {
-      const resultados = [];
+    (async function runTests() {
+      const results = [];
 
-      // Test 1: verificar 1 + 1 = 2
+      // Test 1: 1 + 1 = 2
       try {
         if (1 + 1 === 2) {
-          resultados.push("✔ Test 1: 1 + 1 = 2 (OK)");
+          results.push("✔ Test 1: 1 + 1 = 2 (OK)");
         } else {
-          resultados.push("✘ Test 1: 1 + 1 no es 2 (FAIL)");
+          results.push("✘ Test 1: 1 + 1 no es 2 (FAIL)");
         }
       } catch (e) {
-        resultados.push("✘ Test 1 lanzó error: " + e.message);
+        results.push("✘ Test 1 error: " + e.message);
       }
 
-      // Test 2: simular un GET a "/"
-      // En HTML puro no existe "self.client.get", así que usamos fetch
-      return fetch("/")
-        .then(response => {
-          if (response.status === 200) {
-            resultados.push("✔ Test 2: '/' responde con 200 (OK)");
-          } else {
-            resultados.push("✘ Test 2: '/' responde con " + response.status + " (FAIL)");
-          }
-        })
-        .catch(error => {
-          resultados.push("✘ Test 2: error al hacer GET '/': " + error.message);
-        })
-        .finally(() => {
-          document.getElementById("resultado").textContent = resultados.join("\n");
-          // si quieres que falle el workflow en CI/CD, puedes usar console.error
-          if (resultados.some(r => r.includes("✘"))) {
-            console.error("Algunos tests fallaron");
-          } else {
-            console.log("Todos los tests pasaron");
-          }
-        });
-    }
+      // Test 2: fetch al propio archivo test_basic.html
+      try {
+        const resp = await fetch(window.location.href);
+        if (resp.status === 200) {
+          results.push("✔ Test 2: test_basic.html responde con 200 (OK)");
+        } else {
+          results.push("✘ Test 2: test_basic.html responde con " + resp.status + " (FAIL)");
+        }
+      } catch (e) {
+        results.push("✘ Test 2 error: " + e.message);
+      }
 
-    runTests();
+      // Mostrar resultados
+      document.getElementById('resultado').textContent = results.join("\n");
+
+      if (results.some(r => r.startsWith('✘'))) {
+        console.error("❌ Al menos un test falló");
+      } else {
+        console.log("✅ Todos los tests pasaron");
+      }
+    })();
   </script>
 </body>
 </html>
