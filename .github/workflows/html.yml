@@ -1,57 +1,24 @@
-name: HTML Tests
+name: Run HTML Tests
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch: # 👈 también lo puedes lanzar manualmente
 
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v2
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: '18'
+          node-version: '16'
 
-      - name: Install dependencies
+      - name: Install Puppeteer
         run: npm install puppeteer
 
-      - name: Run HTML tests
-        run: |
-          node <<'EOF'
-          const puppeteer = require('puppeteer');
-          const path = require('path');
-
-          (async () => {
-            const browser = await puppeteer.launch({ headless: true });
-            const page = await browser.newPage();
-
-            // Cargar test_basic.html desde la raíz del repo
-            const filePath = 'file://' + path.resolve('./test_basic.html');
-            await page.goto(filePath);
-
-            // Esperamos que #resultado tenga contenido
-            await page.waitForSelector('#resultado', { timeout: 5000 });
-            const output = await page.$eval('#resultado', el => el.textContent);
-
-            console.log("Resultados del test:\n" + output);
-
-            if (output.includes("✘")) {
-              console.error("❌ Tests fallaron");
-              await browser.close();
-              process.exit(1);
-            } else {
-              console.log("✅ Todos los tests pasaron");
-            }
-
-            await browser.close();
-          })();
-          EOF
-
+      - name: Run HTML test
+        run: node run-tests.js
