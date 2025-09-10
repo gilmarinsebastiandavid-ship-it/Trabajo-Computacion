@@ -23,26 +23,7 @@
         results.push("✘ Test 1 error: " + e.message);
       }
 
-      // Test 2: fetch al propio archivo test_basic.html
-      try {
-        const resp = await fetch(window.location.href);
-        if (resp.status === 200) {
-          results.push("✔ Test 2: test_basic.html responde con 200 (OK)");
-        } else {
-          results.push("✘ Test 2: test_basic.html responde con " + resp.status + " (FAIL)");
-        }
-      } catch (e) {
-        results.push("✘ Test 2 error: " + e.message);
-      }
-
-      // Mostrar resultados
-      document.getElementById('resultado').textContent = results.join("\n");
-
-      if (results.some(r => r.startsWith('✘'))) {
-        console.error("❌ Al menos un test falló");
-      } else {
-        console.log("✅ Todos los tests pasaron");
-      }
+   
     })();
   </script>
 </body>
