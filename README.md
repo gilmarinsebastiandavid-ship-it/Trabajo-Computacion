@@ -37,11 +37,10 @@ npm test
 ### 📍 Integración con GitHub Actions
 
 El repositorio cuenta con un workflow de CI para correr los tests automáticamente en cada push.  
-El archivo `.github/workflows/tests.yml` contiene algo como:
+El archivo `.github/workflows/html.yml` contiene algo como:
 
 ```yaml
-name: Run Tests
-
+name: Run HTML Tests
 on:
   push:
     branches: [ "main" ]
