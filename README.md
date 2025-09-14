@@ -177,7 +177,7 @@ Con esto, GitHub ejecuta los tests de Jest en cada cambio al repositorio.
 3. **Checkout**: descarga el código del repositorio para el job.  
 4. **Setup Node**: instala Node.js versión 18 (alinear con tu entorno local si usas otra).  
 5. **Install dependencies**: `npm ci` instala las dependencias de forma reproducible (usa `package-lock.json`).  
-6. **Run tests**: ejecuta `npm test` con Jest (sin watch).
+6. **Run tests**: ejecuta `npm test`
 
 ---
 
@@ -188,11 +188,11 @@ Con esto, GitHub ejecuta los tests de Jest en cada cambio al repositorio.
 npm install
 ```
 
-2. Asegúrate de tener el script `test` en tu `package.json`. Añade/ajusta esto:
+2. Asegúrate de tener el script `test` en tu `package.json`. :
 ```json
 "scripts": {
-  "test": "jest --watchAll=false"
-}
+  "test": "node run-tests.js"
+}}
 ```
 
 3. Ejecuta los tests localmente:
@@ -200,7 +200,7 @@ npm install
 npm test
 ```
 
-Si el test simple pasa, verás algo como `1 passed` en la salida de Jest.
+Si el test simple pasa, verás algo como `1 passed` en la salida.
 
 ---
 
