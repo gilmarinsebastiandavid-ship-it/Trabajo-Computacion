@@ -299,12 +299,15 @@ Archivo: `test_basic.html`
   </script>
 </body>
 </html>
-✅ Explicación de los tests
-Test 1: valida que 1 + 1 = 2.
-Test 2: simula que el archivo responde correctamente (200 OK).
-Test 3: comprueba que existe un <h1> con el texto esperado.
+✅ Explicación
 
-Todos los tests pasan correctamente y muestran el resultado en pantalla.
+Test 1: valida que 1 + 1 = 2.
+
+Test 2: simula respuesta 200 OK.
+
+Test 3: valida que el título <h1> sea correcto.
+
+Estos tests se pueden abrir directamente en el navegador o ejecutarse dentro del flujo de CI.
 
 ## 6) Errores reales que nos surgieron (y cómo evitarlos en este flujo)
 A) Process completed with exit code 1
