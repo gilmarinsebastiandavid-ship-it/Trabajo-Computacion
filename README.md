@@ -1,9 +1,5 @@
-# Trabajo de Computación – Despliegue en AWS con GitHub Actions y Tests
+# Trabajo de Computación 
 
-Este proyecto corresponde al repositorio [`Trabajo-Computacion`](https://github.com/gilmarinsebastiandavid-ship-it/Trabajo-Computacion).  
-Aquí se documenta detalladamente el proceso de **tests automatizados con GitHub Actions**, el **despliegue manual en AWS (EC2 + Nginx + Node.js/PM2)**, así como los **errores encontrados y sus soluciones**.
-https://img.shields.io/github/actions/workflow/status/gilmarinsebastiandavid-ship-it/Trabajo-Computacion/ci.yml
----
 
 ## 📌 Requisitos previos
 
