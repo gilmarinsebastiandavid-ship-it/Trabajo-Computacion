@@ -1,5 +1,6 @@
 # Trabajo de Computación 
 
+![Run HTML Tests](https://github.com/gilmarinsebastiandavid-ship-it/Trabajo-Computacion/workflows/Run%20HTML%20Tests/badge.svg)
 
 ## 📌 Requisitos previos
 
