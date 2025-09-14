@@ -181,6 +181,66 @@ Con esto, GitHub ejecuta los tests de Jest en cada cambio al repositorio.
 
 ---
 
+## ¿Qué es run-tests.js y para qué sirve?
+
+En este proyecto, los tests no se implementaron con un framework como Jest o Mocha, sino mediante un archivo HTML llamado test_basic.html que contiene validaciones básicas (ejemplo: comprobar que 1+1=2, verificar que existe un <h1>, etc.).
+
+El problema es que GitHub Actions y npm test necesitan ejecutar un script automatizado que devuelva un código de salida (0 = éxito, 1 = error), para poder marcar el workflow como ✅ Passed o ❌ Failed.
+
+Ahí es donde entra en juego run-tests.js:
+
+Lee y ejecuta el archivo test_basic.html.
+
+Simula y valida los tests definidos dentro del HTML.
+
+Muestra en consola el resultado de cada test.
+
+Devuelve un estado de salida para que GitHub Actions sepa si todo salió bien.
+
+De esta forma, aunque los tests estén en un archivo HTML, logramos integrarlos con npm y con el workflow de GitHub Actions.
+
+🔹 Ejemplo de run-tests.js
+
+```js
+// run-tests.js
+const fs = require("fs");
+const { JSDOM } = require("jsdom");
+
+// Leer el archivo test_basic.html
+const html = fs.readFileSync("test_basic.html", "utf8");
+const dom = new JSDOM(html);
+const document = dom.window.document;
+
+let passed = true;
+
+// Test 1: 1 + 1 = 2
+if (1 + 1 === 2) {
+  console.log("✔ Test 1: 1 + 1 = 2 (OK)");
+} else {
+  console.error("✘ Test 1: 1 + 1 ≠ 2 (FAIL)");
+  passed = false;
+}
+
+// Test 2: Verificar que existe un <h1>
+const h1 = document.querySelector("h1");
+if (h1 && h1.textContent.includes("Ejecutando Test Básico")) {
+  console.log("✔ Test 2: <h1> contiene 'Ejecutando Test Básico' (OK)");
+} else {
+  console.error("✘ Test 2: No se encontró el <h1> esperado (FAIL)");
+  passed = false;
+}
+
+// Resultado final
+if (passed) {
+  console.log("✅ Todos los tests pasaron correctamente");
+  process.exit(0); // Éxito
+} else {
+  console.error("❌ Algunos tests fallaron");
+  process.exit(1); // Error
+}
+```
+---
+
 ## 5) Cómo ejecutar los tests localmente (paso a paso)
 
 1. Instala dependencias (si todavía no lo hiciste):
