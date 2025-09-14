@@ -312,6 +312,95 @@ Estos tests se pueden abrir directamente en el navegador o ejecutarse dentro del
 
 ---
 
+🚢 Containerización del Proyecto con Docker
+
+A continuación, se detallan los pasos para containerizar este repositorio utilizando Docker.
+
+---
+
+## 🧱 1. Crear un archivo Dockerfile
+
+En la raíz del proyecto, crea un archivo llamado Dockerfile con el contenido adecuado según tu lenguaje o entorno.
+Ejemplo para una aplicación Node.js:
+
+```
+# Dockerfile
+FROM nginx:alpine
+COPY 'plan_estudios'/ /usr/share/nginx/html/
+COPY default.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
+
+```
+
+📌 Asegúrate de ajustar el Dockerfile según tu lenguaje o framework (Python, Java, etc.).
+
+---
+
+## 📦 2. Crear un archivo default.conf 
+
+Este archivo es porque nginx crea por defecto un index.html y al abrir el contenedor este es el que se abre, con este archivo lo que se hace es que al correr el contenedor se este llamando al html del proyecto y no al index creado por defecto
+
+```
+server {
+    listen 80;
+    server_name localhost;
+
+    root /usr/share/nginx/html;
+    index plan_estudios.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+
+```
+
+---
+
+## 📦 3. Crear un archivo .dockerignore 
+
+Este archivo evita que archivos innecesarios se copien a la imagen.
+```
+node_modules
+.git
+.env
+*.md
+.github
+tests/
+tests
+run-tests.js
+
+```
+---
+
+## 🏗️ 4. Construir la imagen de Docker
+
+Desde la raíz del proyecto, ejecuta el siguiente comando:
+
+```
+docker build -t computacion-git .
+
+```
+---
+
+## 🚀 5. Ejecutar un contenedor
+
+Una vez construida la imagen, puedes ejecutar un contenedor:
+
+docker run -p 3000:3000 computacion-git
+
+
+---
+
+## ✅ Verificar que funciona
+
+Abre tu navegador en http://localhost:3000
+ (o el puerto que hayas usado) y verifica que tu aplicación esté funcionando correctamente.
+
+---
+
 ## 🛠️ Errores y Soluciones
 
 
