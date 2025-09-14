@@ -104,22 +104,11 @@ sudo systemctl restart nginx
 │   └── __tests__/
 │       └── test_basic.html
 └── README.md  (este archivo)
-```
 
----
-
-## 🧪2) Configurar y ejecutar tests
-
-Este proyecto tiene configurados **tests con Jest**.  
-Para ejecutarlos en local:
-
-```bash
-npm install
-npm run-test
 ```
 ---
 
-## 3) Contenido del test añadido (`src/__tests__/test_basic.html`)
+## 2) Contenido del test añadido (`src/__tests__/test_basic.html`)
 Este test es intencionalmente simple para garantizar que el pipeline de CI no falle por falta de tests. Contenido:
 
 ```js
@@ -136,7 +125,7 @@ test('test de ejemplo mínimo (siempre pasa)', () => {
 
 ---
 
-## 4) Workflow de GitHub Actions (`.github/workflows/html.yml`)
+## 3) Workflow de GitHub Actions (`.github/workflows/html.yml`)
 El repositorio cuenta con un workflow de CI para correr los tests automáticamente en cada push.  
 El archivo `.github/workflows/html.yml` contiene algo como:
 
@@ -181,9 +170,9 @@ Con esto, GitHub ejecuta los tests de Jest en cada cambio al repositorio.
 
 ---
 
-## ¿Qué es run-tests.js y para qué sirve?
+## 4) ¿Qué es run-tests.js y para qué sirve?
 
-En este proyecto, los tests no se implementaron con un framework como Jest o Mocha, sino mediante un archivo HTML llamado test_basic.html que contiene validaciones básicas (ejemplo: comprobar que 1+1=2, verificar que existe un <h1>, etc.).
+En este proyecto, los tests no se implementaron con un framework como Jest o Mocha, sino mediante un archivo HTML llamado test_basic.html que contiene validaciones básicas (ejemplo: comprobar que 1+1=2, verificar que existe un `<h1>`, etc.).
 
 El problema es que GitHub Actions y npm test necesitan ejecutar un script automatizado que devuelva un código de salida (0 = éxito, 1 = error), para poder marcar el workflow como ✅ Passed o ❌ Failed.
 
