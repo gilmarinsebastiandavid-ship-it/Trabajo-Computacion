@@ -15,73 +15,14 @@
 
 ---
 ## Despliegue en AWS
-## 🚀 Paso 1. Clonar el repositorio
 
-```bash
-git clone https://github.com/gilmarinsebastiandavid-ship-it/Trabajo-Computacion.git
-cd Trabajo-Computacion
-```
 
----
-
-## 🧪 Paso 2. Configurar y ejecutar tests
-
-Este proyecto tiene configurados **tests con Jest**.  
-Para ejecutarlos en local:
-
-```bash
-npm install
-npm test
-```
-
-### 📍 Integración con GitHub Actions
-
-El repositorio cuenta con un workflow de CI para correr los tests automáticamente en cada push.  
-El archivo `.github/workflows/html.yml` contiene algo como:
-
-```yaml
-name: Run HTML Tests
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18"
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run tests
-        run: npm test
-```
-
-Con esto, GitHub ejecuta los tests de Jest en cada cambio al repositorio.
-
----
-
-## ☁️ Paso 3. Despliegue manual en AWS
+## ☁️ Paso 1. Despliegue manual en AWS
 
 El despliegue no está automatizado, se realizó manualmente en un **servidor EC2 de AWS**.
 
-### 1. Conectarse al servidor
 
-```bash
-ssh -i "mi-clave.pem" ubuntu@mi-ip-publica
-```
-
-### 2. Instalar dependencias en el servidor
+### 1. Instalar dependencias en el servidor
 
 ```bash
 sudo apt update
@@ -89,7 +30,7 @@ sudo apt install -y nginx git nodejs npm
 sudo npm install -g pm2
 ```
 
-### 3. Clonar el repositorio en EC2
+### 2. Clonar el repositorio en EC2
 
 ```bash
 cd /var/www
@@ -98,14 +39,14 @@ cd Trabajo-Computacion
 npm install
 ```
 
-### 4. Levantar la aplicación con PM2
+### 3. Levantar la aplicación con PM2
 
 ```bash
 pm2 start server.js --name trabajo-computacion
 pm2 save
 ```
 
-### 5. Configurar Nginx como proxy inverso
+### 4. Configurar Nginx como proxy inverso
 
 Archivo de configuración en `/etc/nginx/sites-available/trabajo-computacion`:
 
@@ -167,7 +108,18 @@ sudo systemctl restart nginx
 
 ---
 
-## 2) Contenido del test añadido (`src/__tests__/test_basic.html`)
+## 🧪2) Configurar y ejecutar tests
+
+Este proyecto tiene configurados **tests con Jest**.  
+Para ejecutarlos en local:
+
+```bash
+npm install
+npm run-test
+```
+---
+
+## 3) Contenido del test añadido (`src/__tests__/test_basic.html`)
 Este test es intencionalmente simple para garantizar que el pipeline de CI no falle por falta de tests. Contenido:
 
 ```js
@@ -184,7 +136,10 @@ test('test de ejemplo mínimo (siempre pasa)', () => {
 
 ---
 
-## 3) Workflow de GitHub Actions (`.github/workflows/html.yml`)
+## 4) Workflow de GitHub Actions (`.github/workflows/html.yml`)
+El repositorio cuenta con un workflow de CI para correr los tests automáticamente en cada push.  
+El archivo `.github/workflows/html.yml` contiene algo como:
+
 Este archivo ejecuta tests en cada push/PR a `main`:
 
 ```yaml
@@ -200,20 +155,21 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v2
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: '18'
+          node-version: '16'
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install Puppeteer
+        run: npm install puppeteer
 
-      - name: Run tests
-        run: npm test -- --watchAll=false
+      - name: Run HTML test
+        run: node run-tests.js
 ```
+
+Con esto, GitHub ejecuta los tests de Jest en cada cambio al repositorio.
 
 ### Explicación paso a paso del workflow
 1. **Trigger (`on`)**: se ejecuta en `push` y `pull_request` sobre la rama `main`.  
@@ -225,7 +181,7 @@ jobs:
 
 ---
 
-## 4) Cómo ejecutar los tests localmente (paso a paso)
+## 5) Cómo ejecutar los tests localmente (paso a paso)
 
 1. Instala dependencias (si todavía no lo hiciste):
 ```bash
@@ -248,7 +204,7 @@ Si el test simple pasa, verás algo como `1 passed` en la salida de Jest.
 
 ---
 
-## 5) Qué pasa cuando se ejecuta en GitHub Actions (flujo de ejecución)
+## 6) Qué pasa cuando se ejecuta en GitHub Actions (flujo de ejecución)
 
 - GitHub lanza una VM Ubuntu.  
 - Hace checkout del código.  
@@ -315,7 +271,7 @@ Estos tests se pueden abrir directamente en el navegador o ejecutarse dentro del
 ---
 
 ## 🛠️ Errores y Soluciones
-Documentar los errores es crucial para el aprendizaje y para ayudar a otros. Aquí están los principales problemas que surgieron durante el desarrollo y su solución.
+
 
 1. ❌ Process completed with exit code 1
 Problema: El workflow de GitHub Actions fallaba con un error genérico.
