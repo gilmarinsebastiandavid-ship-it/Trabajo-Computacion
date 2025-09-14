@@ -299,6 +299,9 @@ Archivo: `test_basic.html`
   </script>
 </body>
 </html>
+```
+
+
 ✅ Explicación
 
 Test 1: valida que 1 + 1 = 2.
@@ -308,6 +311,9 @@ Test 2: simula respuesta 200 OK.
 Test 3: valida que el título <h1> sea correcto.
 
 Estos tests se pueden abrir directamente en el navegador o ejecutarse dentro del flujo de CI.
+
+
+
 
 🛠️ Errores y Soluciones
 Documentar los errores es crucial para el aprendizaje y para ayudar a otros. Aquí están los principales problemas que surgieron durante el desarrollo y su solución.
