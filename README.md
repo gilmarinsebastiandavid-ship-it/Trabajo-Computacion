@@ -299,52 +299,46 @@ Archivo: `test_basic.html`
   </script>
 </body>
 </html>
-✅ **Explicación de los tests**
-
-- **Test 1:** valida que `1 + 1 = 2`.
-- **Test 2:** simula que el archivo responde correctamente (`200 OK`).
-- **Test 3:** comprueba que existe un `<h1>` con el texto esperado.
+✅ Explicación de los tests
+Test 1: valida que 1 + 1 = 2.
+Test 2: simula que el archivo responde correctamente (200 OK).
+Test 3: comprueba que existe un <h1> con el texto esperado.
 
 Todos los tests pasan correctamente y muestran el resultado en pantalla.
 
----
-
 ## 6) Errores reales que nos surgieron (y cómo evitarlos en este flujo)
+A) Process completed with exit code 1
 
-### A) `Process completed with exit code 1`
+Por qué ocurre: normalmente porque npm test devuelve un código de salida distinto de 0 (tests fallando o error en la ejecución del runner).
 
-- **Por qué ocurre:** normalmente porque `npm test` devuelve un código de salida distinto de 0 (tests fallando o error en la ejecución del runner).
-- **Cómo lo evitamos aquí:**
-  - Añadimos un test básico que siempre pasa (`src/__tests__/app.test.js`).
-  - Ejecutamos `npm test` localmente antes de pushear para verificar que no hay fallos.
-  - En Actions usamos `npm ci` y Node 18 para reproducibilidad.
+Cómo lo evitamos aquí:
 
----
+Añadimos un test básico que siempre pasa (src/__tests__/app.test.js).
 
-### B) Error relacionado con `run-tests.js` o heredoc / EOF
+Ejecutar npm test localmente antes de pushear para verificar que no hay fallos.
 
-- **Por qué ocurrió antes:** intentamos tener scripts largos inline en el YAML y la heredoc se interpretó mal por indentación/shell.
-- **Solución aplicada:** usar un test file en el repo y llamar a `npm test` desde el workflow, evitando scripts inline complejos.
+En Actions usamos npm ci y Node 18 para reproducibilidad.
 
----
+B) Error relacionado con run-tests.js o heredoc / EOF
 
-### C) Repo privado y permisos (deploy / CI)
+Por qué ocurrió antes: intentamos tener scripts largos inline en el YAML y la heredoc se interpretó mal por indentación/shell.
 
-- **Contexto:** antes detectamos problemas porque el repo estaba en privado y ciertas integraciones no tenían permisos suficientes.
-- **Solución aplicada:** pusimos el repo en **público** para el caso de pruebas.  
-  Si el repo debe quedar privado en el futuro, la solución es añadir **Secrets o PAT** con los scopes necesarios y configurar las credenciales.
+Solución aplicada: usar un test file en el repo y llamar a npm test desde el workflow, evitando scripts inline complejos.
 
----
+C) Repo privado y permisos (deploy / CI)
 
-### D) Tests que fallan en CI pero pasan localmente
+Contexto: antes detectamos problemas porque el repo estaba en privado y ciertas integraciones no tenían permisos suficientes.
 
-- **Causas comunes:**
-  - Versión distinta de Node.
-  - Dependencias nativas que requieren build tools.
-  - Dependencias no incluidas en `package-lock.json`.
+Solución aplicada: pusimos el repo en público para el caso de pruebas. Si el repo debe quedar privado en el futuro, la solución es añadir Secrets o PAT con los scopes necesarios y configurar las credenciales.
 
-- **Recomendaciones:**
-  - Alinear la versión de Node con `actions/setup-node`.
-  - Usar `npm ci` en CI.
-  - Si hay paquetes nativos, asegurar `build-essential` y otros prerequisitos si se compila en el runner (o cambiar estrategia).
+D) Tests que fallan en CI pero pasan localmente
 
+Causas comunes: versión distinta de Node, dependencias nativas que requieren build tools, dependencias no incluidas en package-lock.json.
+
+Recomendaciones:
+
+Alinear la versión de Node con actions/setup-node.
+
+Usar npm ci en CI.
+
+Si hay paquetes nativos, asegurar build-essential y otros prerequisitos si se compila en runner (o cambiar estrategia).
