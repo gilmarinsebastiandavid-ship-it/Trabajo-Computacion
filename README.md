@@ -308,12 +308,11 @@ Test 1: valida que 1 + 1 = 2.
 
 Test 2: simula respuesta 200 OK.
 
-Test 3: valida que el título <h1> sea correcto.
+Test 3: valida que el título sea correcto.
 
 Estos tests se pueden abrir directamente en el navegador o ejecutarse dentro del flujo de CI.
 
-
-
+---
 
 🛠️ Errores y Soluciones
 Documentar los errores es crucial para el aprendizaje y para ayudar a otros. Aquí están los principales problemas que surgieron durante el desarrollo y su solución.
@@ -345,3 +344,8 @@ Problema: Al intentar acceder a la aplicación a través de la IP pública, Ngin
 Causa: Este error indica que Nginx no pudo conectarse con la aplicación que debía servir. Generalmente, ocurre porque la aplicación no está corriendo en el puerto esperado (localhost:3000).
 
 Solución: Se revisó el estado de la aplicación con pm2 logs para verificar si estaba activa. Si no lo estaba, se reinició con pm2 restart trabajo-computacion. La clave fue asegurarse de que el proceso estuviera activo y escuchando en el puerto correcto.
+
+---
+
+
+
