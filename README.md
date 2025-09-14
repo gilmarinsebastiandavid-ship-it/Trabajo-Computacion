@@ -309,39 +309,33 @@ Test 3: valida que el título <h1> sea correcto.
 
 Estos tests se pueden abrir directamente en el navegador o ejecutarse dentro del flujo de CI.
 
-## 6) Errores reales que nos surgieron (y cómo evitarlos en este flujo)
-A) Process completed with exit code 1
+🛠️ Errores y Soluciones
+Documentar los errores es crucial para el aprendizaje y para ayudar a otros. Aquí están los principales problemas que surgieron durante el desarrollo y su solución.
 
-Por qué ocurre: normalmente porque npm test devuelve un código de salida distinto de 0 (tests fallando o error en la ejecución del runner).
+1. ❌ Process completed with exit code 1
+Problema: El workflow de GitHub Actions fallaba con un error genérico.
 
-Cómo lo evitamos aquí:
+Causa: Este error suele ocurrir cuando el comando npm test devuelve un código de salida distinto de 0, lo que indica que algún test falló o hubo un error en el entorno.
 
-Añadimos un test básico que siempre pasa (src/__tests__/app.test.js).
+Solución: Se añadió un test básico que siempre pasa para validar que el runner de GitHub Actions funciona correctamente. También se recomendó ejecutar los tests localmente antes de hacer push para evitar este tipo de errores.
 
-Ejecutar npm test localmente antes de pushear para verificar que no hay fallos.
+2. ❌ Permisos denegados al ejecutar GitHub Actions
+Problema: El workflow de GitHub Actions fallaba con un error de permisos.
 
-En Actions usamos npm ci y Node 18 para reproducibilidad.
+Causa: El repositorio estaba configurado como privado, lo que impedía que GitHub Actions tuviera el acceso necesario para clonar y ejecutar los tests.
 
-B) Error relacionado con run-tests.js o heredoc / EOF
+Solución: Se cambió la visibilidad del repositorio a público. Para repositorios privados, la solución sería configurar un Personal Access Token (PAT) con los permisos adecuados.
 
-Por qué ocurrió antes: intentamos tener scripts largos inline en el YAML y la heredoc se interpretó mal por indentación/shell.
+3. ❌ Error al ejecutar npm install en AWS
+Problema: El comando npm install en el servidor EC2 fallaba durante la instalación de dependencias, especialmente aquellas que requieren compilación.
 
-Solución aplicada: usar un test file en el repo y llamar a npm test desde el workflow, evitando scripts inline complejos.
+Causa: Faltaban las herramientas de compilación esenciales (build-essential) en el servidor, que son necesarias para compilar ciertas dependencias de Node.js.
 
-C) Repo privado y permisos (deploy / CI)
+Solución: Se instaló build-essential con sudo apt install -y build-essential antes de ejecutar npm install.
 
-Contexto: antes detectamos problemas porque el repo estaba en privado y ciertas integraciones no tenían permisos suficientes.
+4. ❌ Problemas con Nginx (502 Bad Gateway)
+Problema: Al intentar acceder a la aplicación a través de la IP pública, Nginx mostraba un error 502 Bad Gateway.
 
-Solución aplicada: pusimos el repo en público para el caso de pruebas. Si el repo debe quedar privado en el futuro, la solución es añadir Secrets o PAT con los scopes necesarios y configurar las credenciales.
+Causa: Este error indica que Nginx no pudo conectarse con la aplicación que debía servir. Generalmente, ocurre porque la aplicación no está corriendo en el puerto esperado (localhost:3000).
 
-D) Tests que fallan en CI pero pasan localmente
-
-Causas comunes: versión distinta de Node, dependencias nativas que requieren build tools, dependencias no incluidas en package-lock.json.
-
-Recomendaciones:
-
-Alinear la versión de Node con actions/setup-node.
-
-Usar npm ci en CI.
-
-Si hay paquetes nativos, asegurar build-essential y otros prerequisitos si se compila en runner (o cambiar estrategia).
+Solución: Se revisó el estado de la aplicación con pm2 logs para verificar si estaba activa. Si no lo estaba, se reinició con pm2 restart trabajo-computacion. La clave fue asegurarse de que el proceso estuviera activo y escuchando en el puerto correcto.
