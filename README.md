@@ -312,7 +312,7 @@ Estos tests se pueden abrir directamente en el navegador o ejecutarse dentro del
 
 ---
 
-🚢 Containerización del Proyecto con Docker
+## 🚢 Containerización del Proyecto con Docker
 
 A continuación, se detallan los pasos para containerizar este repositorio utilizando Docker.
 
