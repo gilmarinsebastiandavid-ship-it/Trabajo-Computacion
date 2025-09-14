@@ -389,8 +389,10 @@ docker build -t computacion-git .
 
 Una vez construida la imagen, puedes ejecutar un contenedor:
 
-docker run -p 3000:3000 computacion-git
+```
+docker run -p 8080:80 computacion-git
 
+```
 
 ---
 
