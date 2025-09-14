@@ -314,7 +314,7 @@ Estos tests se pueden abrir directamente en el navegador o ejecutarse dentro del
 
 ---
 
-🛠️ Errores y Soluciones
+## 🛠️ Errores y Soluciones
 Documentar los errores es crucial para el aprendizaje y para ayudar a otros. Aquí están los principales problemas que surgieron durante el desarrollo y su solución.
 
 1. ❌ Process completed with exit code 1
